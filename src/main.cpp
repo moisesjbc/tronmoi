@@ -41,8 +41,6 @@ const Uint8 TAM = 20; // Tamaño del cuadrado que representa a cada jugador.
 /*                                 Prototipos de funciones                                     */
 /***********************************************************************************************/
 
-inline int Valor_En_Rango( Sint16 Valor, Sint16 Min, Sint16 Max );
-Uint32 Obtener_Pixel( SDL_Surface *Superficie, Uint16 x, Uint16 y );
 void Mostrar_Resultado();
 
 
@@ -321,47 +319,6 @@ void Mostrar_Resultado(){
                 exit( 0 );
             }
         }
-    }
-
-}
-
-
-
-inline int Valor_En_Rango( Sint16 Valor, Sint16 Min, Sint16 Max ){
-    return ( ( Valor > Min ) && ( Valor < Max ) );
-}
-
-
-
-Uint32 Obtener_Pixel( SDL_Surface *Superficie, Uint16 x, Uint16 y ){
-    // Obtiene los Bytes Per Píxel.
-    int bpp = Superficie->format->BytesPerPixel;
-
-
-    // Accede al píxel solicitado.
-    Uint8 *p = (Uint8 *)Superficie->pixels + y * Superficie->pitch + x * bpp;
-
-    switch( bpp ){
-        case 1: // 8 bits
-            return *p;
-        break;
-        case 2: // 16 bits
-            return *(Uint16*)p;
-        break;
-        case 3: // 24 bits
-            if( SDL_BYTEORDER == SDL_BIG_ENDIAN ){
-                /*
-                    Se desplazan los valores de R 16 posiciones y de G 8 posiciones para
-                    determinar el color.
-                */
-                return p[R] << 16 | p[G] << 8 | p[B];
-            }else{
-                return p[R] | p[G] << 8 | p[B] << 16;
-            }
-        break;
-        default: // 4 bytes - 32 bits
-            return *(Uint32*)p;
-        break;
     }
 
 }
