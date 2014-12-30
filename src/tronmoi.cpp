@@ -49,48 +49,26 @@ void Tronmoi::run()
     for( ;; ){
         gameGrid.clear();
 
-        /*
-            Inicialización de las coordenadas y el tamaño de los cuadrados que representaran a
-            los jugadores.
-        */
+        // Initialize players' positions.
         gameGrid.getPlayerInitialPos( 0, player1.x, player1.y );
         gameGrid.getPlayerInitialPos( 1, player2.x, player2.y );
 
-        /*
-        Inicialización del desplazamiento inicial de cada jugador. Ambos empezarán
-        desplazándose hacia arriba.
-        */
+        // Initialize player's velocity.
         player1.dx = player2.dx = 0;
         player1.dy = player2.dy = -1;
 
-        /*
-            Dibujado de la "cabeza" de cada jugador.
-        */
+        // Place the "head" of every player on the game's grid.
         gameGrid.setPos( player1.x, player1.y, TileType::PLAYER_1 );
         gameGrid.setPos( player2.x, player2.y, TileType::PLAYER_2 );
 
+        // Main loop: keep running as long as both players are alive.
         player1.dead = player2.dead = false;
-
         while( !player1.dead && !player2.dead ){
-            /*
-                Game loop : Se permanecerá en el bucle mientras ambos jugadores permanezcan
-                vivos.
-            */
-
             while( SDL_PollEvent( &event ) ){
-                /*
-                    Consulta de la cola de events.
-                */
+                // Process user input.
                 if( event.type == SDL_KEYDOWN ){
-                    /*
-                        event producido al pulsar una tecla. Se analiza si es uno de los
-                        botones de dirección de uno de los jugadores y en tal caso se
-                        modifica la dirección de su desplazamiento.
-                    */
                     switch( event.key.keysym.sym ){
-                        /*
-                            Botones de dirección del jugador 1.
-                        */
+                        // Movement for player 1.
                         case SDLK_w:
                             player1.dy = -1;
                             player1.dx = 0;
@@ -108,9 +86,7 @@ void Tronmoi::run()
                             player1.dx = -1;
                         break;
 
-                        /*
-                            Botones de dirección del jugador 2.
-                        */
+                        // Movement for player 2.
                         case SDLK_UP:
                             player2.dy = -1;
                             player2.dx = 0;
@@ -131,27 +107,17 @@ void Tronmoi::run()
                         default:
                             NULL;
                         break;
-
                     };
                 }else if( event.type == SDL_QUIT ){
-                    /*
-                        event para salir del programa.
-                    */
-                    exit(0);
+                    // Exit game.
+                    exit( 0 );
                 }
             }
 
 
-            /*
-                Se avanzan las coordenadas de ambos jugadores.
-            */
+            // Update both players.
             player1.x += player1.dx;
             player1.y += player1.dy;
-
-            player2.x += player2.dx;
-            player2.y += player2.dy;
-
-
             if( gameGrid.getPos( player1.x, player1.y ) == TileType::EMPTY ){
                 gameGrid.setPos( player1.x, player1.y, TileType::PLAYER_1 );
                 gameGrid.setPos( player1.x - player1.dx, player1.y - player1.dy, TileType::PLAYER_1_WALL );
@@ -159,6 +125,8 @@ void Tronmoi::run()
                 player1.dead = true;
             }
 
+            player2.x += player2.dx;
+            player2.y += player2.dy;
             if( gameGrid.getPos( player2.x, player2.y ) == TileType::EMPTY ){
                 gameGrid.setPos( player2.x, player2.y, TileType::PLAYER_2 );
                 gameGrid.setPos( player2.x - player2.dx, player2.y - player2.dy, TileType::PLAYER_2_WALL );
@@ -166,10 +134,7 @@ void Tronmoi::run()
                 player2.dead = true;
             }
 
-
-            /*
-                Se actualiza la screen_ y se espera 0.250 segundos.
-            */
+            // Update screen and wait.
             gameGrid.draw( player1.playerColor,
                            player1.wallColor,
                            player2.playerColor,
@@ -178,7 +143,7 @@ void Tronmoi::run()
             SDL_Delay( 50 );
         }
 
-        SDL_FillRect( screen_, NULL, 0 );
+        // Display the match's result.
         displayResult();
     }
 }
@@ -186,63 +151,42 @@ void Tronmoi::run()
 
 void Tronmoi::displayResult(){
     SDL_Event event;
+    SDL_Surface *victorySurface, *restartSurface;
+    SDL_Rect victoryRect, restartRect;
+    bool exitLoop = false;
 
-    // Superficies para guardar las imágenes.
-    SDL_Surface *I_Victoria, *I_Recomenzar;
+    // Initialize the rects for both images.
+    victoryRect.x = 175;
+    victoryRect.y = 250;
+    victoryRect.w = 500;
+    victoryRect.h = 60;
 
-    // Rectángulos para establecer las coordenadas y tamaño de las imágenes.
-    SDL_Rect C_Victoria, C_Recomenzar;
+    restartRect.x = 75;
+    restartRect.y = 560;
+    restartRect.w = 650;
+    restartRect.h = 40;
 
-    bool Salir_Bucle = false;
-
-    /*
-        Inicialización de las coordenadas y el tamaño de los rectángulos de ambas imágenes.
-    */
-    C_Victoria.x = 175;
-    C_Victoria.y = 250;
-    C_Victoria.w = 500;
-    C_Victoria.h = 60;
-
-    C_Recomenzar.x = 75;
-    C_Recomenzar.y = 560;
-    C_Recomenzar.w = 650;
-    C_Recomenzar.h = 40;
-
-    /*
-        Según se trate de un empate o de la victoria de uno de los jugadores se carga la imagen
-        con el resultado acorde.
-    */
+    // Load victory image.
     if( player1.dead && player2.dead ){
-        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Empate.bmp" );
+        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Empate.bmp" );
     }else if( player1.dead ){
-        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_2.bmp" );
+        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_2.bmp" );
     }else{
-        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_1.bmp" );
+        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_1.bmp" );
+    }
+    if( !victorySurface ){
+        throw std::runtime_error( SDL_GetError() );
     }
 
-    /*
-        Se carga la imagen con el texto "Pulse una tecla cualquiera para jugar de nuevo".
-    */
-    I_Recomenzar = SDL_LoadBMP( "../share/tronmoi/img/Recomenzar.bmp" );
-
-    /*
-        Si una de las imagenes no se cargó correctamente se sale del programa y se informa del
-        error.
-    */
-    if( !I_Victoria ){
-        cerr << "No se pudo cargar el texto de victoria : " << SDL_GetError() << endl;
-        exit(-1);
+    // Load an image with the text "press any key to restart".
+    restartSurface = SDL_LoadBMP( "../share/tronmoi/img/Recomenzar.bmp" );
+    if( !restartSurface ){
+        throw std::runtime_error( SDL_GetError() );
     }
 
-    if( !I_Recomenzar ){
-        cerr << "No se pudo cargar el texto de recomenzar : " << SDL_GetError() << endl;
-        exit(-1);
-    }
-
-    /*
-        Blitting y refresco de la screen_.
-    */
-    SDL_BlitSurface( I_Victoria, NULL, screen_, &C_Victoria );
+    // Display the victory surface and wait one second.
+    SDL_FillRect( screen_, NULL, 0 );
+    SDL_BlitSurface( victorySurface, NULL, screen_, &victoryRect );
     SDL_Flip( screen_ );
     SDL_Delay( 1000 );
     while( SDL_PollEvent( &event ) ){
@@ -251,23 +195,19 @@ void Tronmoi::displayResult(){
         }
     }
 
-    SDL_BlitSurface( I_Recomenzar, NULL, screen_, &C_Recomenzar );
+    // Display the restart surface.
+    SDL_BlitSurface( restartSurface, NULL, screen_, &restartRect );
     SDL_Flip( screen_ );
 
-    /*
-        Liberación de las superficies;
-    */
-    SDL_FreeSurface( I_Victoria );
-    SDL_FreeSurface( I_Recomenzar );
+    // Free resources.
+    SDL_FreeSurface( victorySurface );
+    SDL_FreeSurface( restartSurface );
 
-    /*
-        Se permanece en la screen_ de resultado mientras no se pulse una tecla o no se cierre
-        el juego.
-    */
-    while( !Salir_Bucle ){
+    // Wait until user presses any key or exits the game.
+    while( !exitLoop ){
         while( SDL_PollEvent( &event ) ){
             if( event.type == SDL_KEYDOWN ){
-                Salir_Bucle = true;
+                exitLoop = true;
             }else if( event.type == SDL_QUIT ){
                 exit( 0 );
             }
