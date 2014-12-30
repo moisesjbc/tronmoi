@@ -23,10 +23,6 @@ using namespace std;
 SDL_Surface *Pantalla;
 SDL_Event Evento;
 
-enum RGB {
-    R = 0, G, B
-};
-
 struct Player {
     int x, y;
     Sint8 dx, dy;
@@ -36,7 +32,6 @@ struct Player {
     bool dead;
 } J1, J2;
 
-const Uint8 TAM = 20; // Tamaño del cuadrado que representa a cada jugador.
 
 /*                                 Prototipos de funciones                                     */
 /***********************************************************************************************/
