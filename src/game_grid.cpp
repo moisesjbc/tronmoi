@@ -59,6 +59,10 @@ void GameGrid::draw( SDL_Surface *screen,
     SDL_Rect rect = { 0, 0, TILE_SIZE, TILE_SIZE };
     unsigned int row, column;
 
+    const Uint32 BACKGROUND_COLOR =
+            SDL_MapRGB( screen->format, 200, 200, 200 );
+    SDL_FillRect( screen, nullptr, BACKGROUND_COLOR );
+
     for( row = 0; row < MATRIX_SIZE_; row++ ){
         for( column = 0; column < MATRIX_SIZE_; column++ ){
             rect.w = TILE_SIZE;
