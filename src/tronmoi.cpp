@@ -19,7 +19,6 @@
 
 #include "tronmoi.hpp"
 #include <stdexcept>
-#include <SDL/SDL_ttf.h>
 #include <iostream>
 using namespace std;
 
@@ -36,6 +35,15 @@ Tronmoi::Tronmoi( SDL_Surface* screen ) :
     player1.wallColor = SDL_MapRGB( screen_->format, 155, 0, 0 );
     player2.playerColor = SDL_MapRGB( screen_->format, 0, 0, 255 );
     player2.wallColor = SDL_MapRGB( screen_->format, 0, 0, 155 );
+
+    // Load text font.
+    // TODO: Use a relative path.
+    textFont_ =
+            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+                          30 );
+    if( !textFont_ ){
+        throw std::runtime_error( TTF_GetError() );
+    }
 }
 
 
@@ -155,31 +163,23 @@ void Tronmoi::displayResult(){
     SDL_Surface *victorySurface, *restartSurface;
     bool exitLoop = false;
 
-    // TODO: Use a relative path.
-    TTF_Font* font =
-            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
-                          30 );
-    if( !font ){
-        throw std::runtime_error( TTF_GetError() );
-    }
-
     // Create the victory text surface.
     if( player1.dead && player2.dead ){
         const SDL_Color fontColor = { 255, 255, 255, 255 };
         victorySurface =
-                TTF_RenderText_Solid( font,
+                TTF_RenderText_Solid( textFont_,
                                       "Draw",
                                       fontColor );
     }else if( player1.dead ){
         const SDL_Color fontColor = { 0, 0, 255, 255 };
         victorySurface =
-                TTF_RenderText_Solid( font,
+                TTF_RenderText_Solid( textFont_,
                                       "Player 2 wins",
                                       fontColor );
     }else{
         const SDL_Color fontColor = { 255, 0, 0, 255 };
         victorySurface =
-                TTF_RenderText_Solid( font,
+                TTF_RenderText_Solid( textFont_,
                                       "Player 1 wins",
                                       fontColor );
     }
@@ -189,7 +189,7 @@ void Tronmoi::displayResult(){
 
     // Create a surface with the text "press any key to restart".
     const SDL_Color fontColor = { 255, 255, 255, 255 };
-    restartSurface = TTF_RenderText_Solid( font,
+    restartSurface = TTF_RenderText_Solid( textFont_,
                                            "Press any key to restart",
                                            fontColor );
     if( !restartSurface ){

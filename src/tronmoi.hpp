@@ -21,6 +21,7 @@
 #define TRONMOI_HPP
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include "game_grid.hpp"
 
 struct Player {
@@ -67,6 +68,8 @@ class Tronmoi
         Player player1, player2;
 
         GameGrid gameGrid;
+
+        TTF_Font* textFont_;
 };
 
 #endif // TRONMOI_HPP
