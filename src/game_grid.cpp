@@ -14,7 +14,7 @@ GameGrid::GameGrid( unsigned int rows, unsigned int columns ) :
  * 3. Getters
  ***/
 
-TileType GameGrid::getPos( unsigned int row, unsigned int column )
+TileType GameGrid::getPos( unsigned int row, unsigned int column ) const
 {
     return matrix_.at( column * MATRIX_SIZE_ + row );
 }
