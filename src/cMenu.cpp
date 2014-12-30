@@ -1,5 +1,4 @@
 
-#include"Nucleo.cpp"
 #include<SDL/SDL_ttf.h>
 
 /*                             Constantes y variables globales                                 */

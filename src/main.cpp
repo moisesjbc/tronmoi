@@ -11,11 +11,15 @@
 */
 
 #include"cMenu.cpp"
+#include <iostream>
+using namespace std;
+
 
 /*                             Constantes y variables globales                                 */
 /***********************************************************************************************/
 
-
+SDL_Surface *Pantalla;
+SDL_Event Evento;
 
 enum RGB {
     R = 0, G, B
