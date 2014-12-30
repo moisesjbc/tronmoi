@@ -81,38 +81,54 @@ void Tronmoi::run()
                     switch( event.key.keysym.sym ){
                         // Movement for player 1.
                         case SDLK_w:
-                            player1.dy = -1;
-                            player1.dx = 0;
+                            if( player1.dy != 1 ){
+                                player1.dy = -1;
+                                player1.dx = 0;
+                            }
                         break;
                         case SDLK_s:
-                            player1.dy = 1;
-                            player1.dx = 0;
+                            if( player1.dy != -1 ){
+                                player1.dy = 1;
+                                player1.dx = 0;
+                            }
                         break;
                         case SDLK_d:
-                            player1.dy = 0;
-                            player1.dx = 1;
+                            if( player1.dx != -1 ){
+                                player1.dy = 0;
+                                player1.dx = 1;
+                            }
                         break;
                         case SDLK_a:
-                            player1.dy = 0;
-                            player1.dx = -1;
+                            if( player1.dx != 1 ){
+                                player1.dy = 0;
+                                player1.dx = -1;
+                            }
                         break;
 
                         // Movement for player 2.
                         case SDLK_UP:
-                            player2.dy = -1;
-                            player2.dx = 0;
+                            if( player2.dy != 1 ){
+                                player2.dy = -1;
+                                player2.dx = 0;
+                            }
                         break;
                         case SDLK_DOWN:
-                            player2.dy = 1;
-                            player2.dx = 0;
+                            if( player2.dy != -1 ){
+                                player2.dy = 1;
+                                player2.dx = 0;
+                            }
                         break;
                         case SDLK_RIGHT:
-                            player2.dy = 0;
-                            player2.dx = 1;
+                            if( player2.dx != -1 ){
+                                player2.dy = 0;
+                                player2.dx = 1;
+                            }
                         break;
                         case SDLK_LEFT:
-                            player2.dy = 0;
-                            player2.dx = -1;
+                            if( player2.dx != 1 ){
+                                player2.dy = 0;
+                                player2.dx = -1;
+                            }
                         break;
 
                         default:
