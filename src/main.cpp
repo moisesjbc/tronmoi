@@ -27,11 +27,11 @@ enum RGB {
     R = 0, G, B
 };
 
-struct sJugador {
+struct Player {
     int x, y;
     Sint8 dx, dy;
-    Uint32 Color_Cabeza;
-    Uint32 Color_Cuerpo;
+    Uint32 playerColor;
+    Uint32 wallColor;
 } J1, J2;
 
 bool Muerte_J1 = false, Muerte_J2 = false;
@@ -76,11 +76,11 @@ int main( int argc, char *argv[] )
         /*
             Inicialización de los colores elegidos para ambos jugadores.
         */
-        J1.Color_Cabeza = SDL_MapRGB( Pantalla->format, 255, 0, 0 );
-        J1.Color_Cuerpo = SDL_MapRGB( Pantalla->format, 155, 0, 0 );
+        J1.playerColor = SDL_MapRGB( Pantalla->format, 255, 0, 0 );
+        J1.wallColor = SDL_MapRGB( Pantalla->format, 155, 0, 0 );
 
-        J2.Color_Cabeza = SDL_MapRGB( Pantalla->format, 0, 0, 255 );
-        J2.Color_Cuerpo = SDL_MapRGB( Pantalla->format, 0, 0, 155 );
+        J2.playerColor = SDL_MapRGB( Pantalla->format, 0, 0, 255 );
+        J2.wallColor = SDL_MapRGB( Pantalla->format, 0, 0, 155 );
 
         for( ;; ){
             gameGrid.clear();
@@ -206,10 +206,10 @@ int main( int argc, char *argv[] )
                 /*
                     Se actualiza la pantalla y se espera 0.250 segundos.
                 */
-                gameGrid.draw( J1.Color_Cabeza,
-                               J1.Color_Cuerpo,
-                               J2.Color_Cabeza,
-                               J2.Color_Cuerpo );
+                gameGrid.draw( J1.playerColor,
+                               J1.wallColor,
+                               J2.playerColor,
+                               J2.wallColor );
                 SDL_Flip( Pantalla );
                 SDL_Delay( 50 );
             }
