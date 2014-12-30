@@ -6,9 +6,9 @@ const unsigned int TILE_SIZE = 20;
  * 1. Construction
  ***/
 
-GameGrid::GameGrid( unsigned int rows, unsigned int columns ) :
-    MATRIX_SIZE_( rows * columns ),
-    matrix_( MATRIX_SIZE_, TileType::EMPTY )
+GameGrid::GameGrid( unsigned int size ) :
+    MATRIX_SIZE_( size ),
+    matrix_( MATRIX_SIZE_ * MATRIX_SIZE_, TileType::EMPTY )
 {}
 
 

@@ -18,7 +18,7 @@ class GameGrid
         /***
          * 1. Construction
          ***/
-        GameGrid( unsigned int rows, unsigned int columns );
+        GameGrid( unsigned int size );
 
 
         /***
