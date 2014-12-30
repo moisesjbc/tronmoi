@@ -19,6 +19,7 @@
 
 #include "tronmoi.hpp"
 #include <stdexcept>
+#include <SDL/SDL_ttf.h>
 
 /*                             Constantes y variables globales                                 */
 /***********************************************************************************************/
@@ -40,6 +41,12 @@ int main( int argc, char *argv[] )
         throw std::runtime_error( SDL_GetError() );
     }
     atexit( SDL_Quit );
+
+    // Initialize SDL_ttf
+    if( TTF_Init() < 0 ){
+        throw std::runtime_error( TTF_GetError() );
+    }
+    atexit( TTF_Quit );
 
     // Set main window.
     screen_ = SDL_SetVideoMode( 800, 600, 32, SDL_ANYFORMAT );

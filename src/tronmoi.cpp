@@ -19,6 +19,7 @@
 
 #include "tronmoi.hpp"
 #include <stdexcept>
+#include <SDL/SDL_ttf.h>
 #include <iostream>
 using namespace std;
 
@@ -152,40 +153,57 @@ void Tronmoi::run()
 void Tronmoi::displayResult(){
     SDL_Event event;
     SDL_Surface *victorySurface, *restartSurface;
-    SDL_Rect victoryRect, restartRect;
     bool exitLoop = false;
 
-    // Initialize the rects for both images.
-    victoryRect.x = 175;
-    victoryRect.y = 250;
-    victoryRect.w = 500;
-    victoryRect.h = 60;
+    // TODO: Use a relative path.
+    TTF_Font* font =
+            TTF_OpenFont( "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+                          30 );
+    if( !font ){
+        throw std::runtime_error( TTF_GetError() );
+    }
 
-    restartRect.x = 75;
-    restartRect.y = 560;
-    restartRect.w = 650;
-    restartRect.h = 40;
-
-    // Load victory image.
+    // Create the victory text surface.
     if( player1.dead && player2.dead ){
-        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Empate.bmp" );
+        const SDL_Color fontColor = { 255, 255, 255, 255 };
+        victorySurface =
+                TTF_RenderText_Solid( font,
+                                      "Draw",
+                                      fontColor );
     }else if( player1.dead ){
-        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_2.bmp" );
+        const SDL_Color fontColor = { 0, 0, 255, 255 };
+        victorySurface =
+                TTF_RenderText_Solid( font,
+                                      "Player 2 wins",
+                                      fontColor );
     }else{
-        victorySurface = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_1.bmp" );
+        const SDL_Color fontColor = { 255, 0, 0, 255 };
+        victorySurface =
+                TTF_RenderText_Solid( font,
+                                      "Player 1 wins",
+                                      fontColor );
     }
     if( !victorySurface ){
-        throw std::runtime_error( SDL_GetError() );
+        throw std::runtime_error( TTF_GetError() );
     }
 
-    // Load an image with the text "press any key to restart".
-    restartSurface = SDL_LoadBMP( "../share/tronmoi/img/Recomenzar.bmp" );
+    // Create a surface with the text "press any key to restart".
+    const SDL_Color fontColor = { 255, 255, 255, 255 };
+    restartSurface = TTF_RenderText_Solid( font,
+                                           "Press any key to restart",
+                                           fontColor );
     if( !restartSurface ){
-        throw std::runtime_error( SDL_GetError() );
+        throw std::runtime_error( TTF_GetError() );
     }
 
     // Display the victory surface and wait one second.
     SDL_FillRect( screen_, NULL, 0 );
+    SDL_Rect victoryRect = {
+        ( ( screen_->w - victorySurface->w ) >> 1 ),
+        ( ( screen_->h - victorySurface->w ) >> 1 ),
+        victorySurface->w,
+        victorySurface->h
+    };
     SDL_BlitSurface( victorySurface, NULL, screen_, &victoryRect );
     SDL_Flip( screen_ );
     SDL_Delay( 1000 );
@@ -196,6 +214,13 @@ void Tronmoi::displayResult(){
     }
 
     // Display the restart surface.
+    SDL_Rect restartRect =
+    {
+        ( ( screen_->w - restartSurface->w ) >> 1 ),
+        ( screen_->h - restartSurface->h ),
+        restartSurface->w,
+        restartSurface->h
+    };
     SDL_BlitSurface( restartSurface, NULL, screen_, &restartRect );
     SDL_Flip( screen_ );
 
