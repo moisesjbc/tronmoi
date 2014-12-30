@@ -53,6 +53,8 @@ void Mostrar_Resultado();
 
 int main( int argc, char *argv[] )
 {
+    (void)( argc );
+    (void)( argv );
 
     SDL_Rect C1, C2; // Cuadrados que representan a ambos jugadores.
 
