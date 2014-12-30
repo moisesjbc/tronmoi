@@ -55,6 +55,8 @@ void Tronmoi::run()
 {
     SDL_Event event;
 
+    displayIntroScreen();
+
     for( ;; ){
         gameGrid.clear();
 
@@ -154,6 +156,60 @@ void Tronmoi::run()
 
         // Display the match's result.
         displayResult();
+    }
+}
+
+
+/***
+ * 4. Result displaying
+ ***/
+
+void Tronmoi::displayIntroScreen()
+{
+    const SDL_Color fontColor = { 255, 255, 255, 255 };
+    unsigned int textIndex = 0;
+    SDL_Event event;
+
+    std::vector< std::string > texts =
+    {
+        "Player 1 controls: 'w', 's', 'a', 'd'",
+        "Player 2 controls: arrows",
+        "Press any key to continue"
+    };
+
+    for( const std::string& text : texts ){
+        SDL_Surface* textSurface =
+                TTF_RenderText_Solid( textFont_,
+                                      text.c_str(),
+                                      fontColor );
+        if( !textSurface ){
+            throw std::runtime_error( TTF_GetError() );
+        }
+
+        SDL_Rect textRect =
+        {
+            ( screen_->w - textSurface->w ) >> 1,
+            ( screen_->h - textSurface->h ) * textIndex / ( texts.size() - 1 ),
+            textSurface->w,
+            textSurface->h
+        };
+
+        SDL_BlitSurface( textSurface, nullptr, screen_, &textRect );
+
+        SDL_FreeSurface( textSurface );
+
+        textIndex++;
+    }
+
+
+    SDL_Flip( screen_ );
+    do{
+        SDL_WaitEvent( &event );
+    }while( event.type != SDL_QUIT &&
+            event.type != SDL_KEYDOWN );
+
+    if( event.type == SDL_QUIT ){
+        exit( 0 );
     }
 }
 

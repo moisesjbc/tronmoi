@@ -58,6 +58,7 @@ class Tronmoi
         /***
          * 4. Result displaying
          ***/
+        void displayIntroScreen();
         void displayResult();
 
 
