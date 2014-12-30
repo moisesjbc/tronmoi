@@ -9,7 +9,9 @@
 enum class TileType {
     EMPTY,
     PLAYER_1,
-    PLAYER_2
+    PLAYER_1_WALL,
+    PLAYER_2,
+    PLAYER_2_WALL
 };
 
 class GameGrid
@@ -42,7 +44,11 @@ class GameGrid
         /***
          * 5. Drawing
          ***/
-        void draw( SDL_Surface* screen, Uint32 playerColor1, Uint32 playerColor2 ) const;
+        void draw( SDL_Surface *screen,
+                   Uint32 playerColor1,
+                   Uint32 playerWallColor1,
+                   Uint32 playerColor2,
+                   Uint32 playerWallColor2 ) const;
 
 
     private:

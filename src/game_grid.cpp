@@ -36,7 +36,11 @@ void GameGrid::setPos( unsigned int x, unsigned int y, TileType type )
  * 5. Drawing
  ***/
 
-void GameGrid::draw( SDL_Surface *screen, Uint32 playerColor1, Uint32 playerColor2 ) const
+void GameGrid::draw( SDL_Surface *screen,
+                     Uint32 playerColor1,
+                     Uint32 playerWallColor1,
+                     Uint32 playerColor2,
+                     Uint32 playerWallColor2 ) const
 {
     SDL_Rect rect = { 0, 0, TILE_SIZE, TILE_SIZE };
     unsigned int row, column;
@@ -52,8 +56,14 @@ void GameGrid::draw( SDL_Surface *screen, Uint32 playerColor1, Uint32 playerColo
                 case TileType::PLAYER_1:
                     SDL_FillRect( screen, &rect, playerColor1 );
                 break;
+                case TileType::PLAYER_1_WALL:
+                    SDL_FillRect( screen, &rect, playerWallColor1 );
+                break;
                 case TileType::PLAYER_2:
                     SDL_FillRect( screen, &rect, playerColor2 );
+                break;
+                case TileType::PLAYER_2_WALL:
+                    SDL_FillRect( screen, &rect, playerWallColor2 );
                 break;
             }
 
