@@ -21,7 +21,7 @@ class GameGrid
         /***
          * 1. Construction
          ***/
-        GameGrid( unsigned int size );
+        GameGrid( SDL_Surface *screen, unsigned int size );
 
 
         /***
@@ -34,6 +34,7 @@ class GameGrid
          * 3. Getters
          ***/
         TileType getPos( int x, int y ) const;
+        void getPlayerInitialPos( unsigned int player, int& x, int& y ) const;
 
 
         /***
@@ -46,14 +47,15 @@ class GameGrid
         /***
          * 5. Drawing
          ***/
-        void draw( SDL_Surface *screen,
-                   Uint32 playerColor1,
+        void draw( Uint32 playerColor1,
                    Uint32 playerWallColor1,
                    Uint32 playerColor2,
                    Uint32 playerWallColor2 ) const;
 
 
     private:
+        SDL_Surface *screen_;
+
         const unsigned int MATRIX_SIZE_;
         std::vector< TileType > matrix_;
 };

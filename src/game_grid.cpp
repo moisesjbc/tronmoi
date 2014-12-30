@@ -7,10 +7,16 @@ const unsigned int TILE_SIZE = 20;
  * 1. Construction
  ***/
 
-GameGrid::GameGrid( unsigned int size ) :
+GameGrid::GameGrid( SDL_Surface *screen, unsigned int size ) :
+    screen_( screen ),
     MATRIX_SIZE_( size ),
     matrix_( MATRIX_SIZE_ * MATRIX_SIZE_, TileType::EMPTY )
-{}
+{
+    if( size * TILE_SIZE > screen_->w ||
+        size * TILE_SIZE > screen_->h ){
+        throw std::runtime_error( "Game's grid is bigger than screen!" );
+    }
+}
 
 
 /***
@@ -24,6 +30,17 @@ TileType GameGrid::getPos( int x, int y ) const
         return matrix_.at( y * MATRIX_SIZE_ + x );
     }else{
         return TileType::INVALID;
+    }
+}
+
+void GameGrid::getPlayerInitialPos( unsigned int player, int &x, int &y ) const
+{
+    if( player == 0 ){
+        x = MATRIX_SIZE_ / 3;
+        y = MATRIX_SIZE_ >> 1;
+    }else{
+        x = MATRIX_SIZE_ * 2 / 3;
+        y = MATRIX_SIZE_ >> 1;
     }
 }
 
@@ -50,18 +67,21 @@ void GameGrid::clear()
  * 5. Drawing
  ***/
 
-void GameGrid::draw( SDL_Surface *screen,
-                     Uint32 playerColor1,
+void GameGrid::draw( Uint32 playerColor1,
                      Uint32 playerWallColor1,
                      Uint32 playerColor2,
                      Uint32 playerWallColor2 ) const
 {
-    SDL_Rect rect = { 0, 0, TILE_SIZE, TILE_SIZE };
+    SDL_Rect rect = {
+        ( screen_->w - MATRIX_SIZE_ * TILE_SIZE ) >> 1,
+        ( screen_->h - MATRIX_SIZE_ * TILE_SIZE ) >> 1,
+        TILE_SIZE,
+        TILE_SIZE };
     unsigned int row, column;
 
     const Uint32 BACKGROUND_COLOR =
-            SDL_MapRGB( screen->format, 200, 200, 200 );
-    SDL_FillRect( screen, nullptr, BACKGROUND_COLOR );
+            SDL_MapRGB( screen_->format, 200, 200, 200 );
+    SDL_FillRect( screen_, nullptr, BACKGROUND_COLOR );
 
     for( row = 0; row < MATRIX_SIZE_; row++ ){
         for( column = 0; column < MATRIX_SIZE_; column++ ){
@@ -69,19 +89,19 @@ void GameGrid::draw( SDL_Surface *screen,
             rect.h = TILE_SIZE;
             switch( getPos( column, row ) ){
                 case TileType::EMPTY:
-                    SDL_FillRect( screen, &rect, 0 );
+                    SDL_FillRect( screen_, &rect, 0 );
                 break;
                 case TileType::PLAYER_1:
-                    SDL_FillRect( screen, &rect, playerColor1 );
+                    SDL_FillRect( screen_, &rect, playerColor1 );
                 break;
                 case TileType::PLAYER_1_WALL:
-                    SDL_FillRect( screen, &rect, playerWallColor1 );
+                    SDL_FillRect( screen_, &rect, playerWallColor1 );
                 break;
                 case TileType::PLAYER_2:
-                    SDL_FillRect( screen, &rect, playerColor2 );
+                    SDL_FillRect( screen_, &rect, playerColor2 );
                 break;
                 case TileType::PLAYER_2_WALL:
-                    SDL_FillRect( screen, &rect, playerWallColor2 );
+                    SDL_FillRect( screen_, &rect, playerWallColor2 );
                 break;
                 case TileType::INVALID:
                     throw std::runtime_error( "Invalid tile!" );
@@ -90,7 +110,7 @@ void GameGrid::draw( SDL_Surface *screen,
 
             rect.x += TILE_SIZE;
         }
-        rect.x = 0;
+        rect.x = ( screen_->w - MATRIX_SIZE_ * TILE_SIZE ) >> 1;
         rect.y += TILE_SIZE;
     }
 }

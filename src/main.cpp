@@ -55,7 +55,6 @@ void Mostrar_Resultado();
 
 int main( int argc, char *argv[] )
 {
-    GameGrid gameGrid( 32 );
     (void)( argc );
     (void)( argv );
 
@@ -69,6 +68,8 @@ int main( int argc, char *argv[] )
         atexit( SDL_Quit );
         Pantalla = SDL_SetVideoMode( 800, 600, 32, SDL_ANYFORMAT );
         SDL_WM_SetCaption( "TRONMOI", NULL );
+
+        GameGrid gameGrid( Pantalla, 30 );
 
         const Uint32 COLOR_NEGRO = SDL_MapRGB( Pantalla->format, 0, 0, 0 );
 
@@ -88,11 +89,8 @@ int main( int argc, char *argv[] )
                 Inicialización de las coordenadas y el tamaño de los cuadrados que representaran a
                 los jugadores.
             */
-            J1.x = 11;
-            J1.y = 16;
-
-            J2.x = 21;
-            J2.y = 16;
+            gameGrid.getPlayerInitialPos( 0, J1.x, J1.y );
+            gameGrid.getPlayerInitialPos( 1, J2.x, J2.y );
 
             /*
             Inicialización del desplazamiento inicial de cada jugador. Ambos empezarán
@@ -208,8 +206,7 @@ int main( int argc, char *argv[] )
                 /*
                     Se actualiza la pantalla y se espera 0.250 segundos.
                 */
-                gameGrid.draw( Pantalla,
-                               J1.Color_Cabeza,
+                gameGrid.draw( J1.Color_Cabeza,
                                J1.Color_Cuerpo,
                                J2.Color_Cabeza,
                                J2.Color_Cuerpo );
