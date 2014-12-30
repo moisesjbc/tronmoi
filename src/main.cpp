@@ -10,7 +10,8 @@
   choca con un muro pierde.
 */
 
-#include"cMenu.cpp"
+#include<SDL/SDL_ttf.h>
+
 #include <iostream>
 using namespace std;
 
@@ -50,7 +51,8 @@ void Mostrar_Resultado();
 
 
 
-int main( int argc, char *argv[] ){
+int main( int argc, char *argv[] )
+{
 
     SDL_Rect C1, C2; // Cuadrados que representan a ambos jugadores.
 
