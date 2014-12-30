@@ -11,7 +11,8 @@ enum class TileType {
     PLAYER_1,
     PLAYER_1_WALL,
     PLAYER_2,
-    PLAYER_2_WALL
+    PLAYER_2_WALL,
+    INVALID
 };
 
 class GameGrid
@@ -32,13 +33,14 @@ class GameGrid
         /***
          * 3. Getters
          ***/
-        TileType getPos( unsigned int x, unsigned int y ) const;
+        TileType getPos( int x, int y ) const;
 
 
         /***
          * 4. Setters
          ***/
-        void setPos( unsigned int x, unsigned int y, TileType type );
+        void setPos( int x, int y, TileType type );
+        void clear();
 
 
         /***

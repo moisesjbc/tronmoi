@@ -11,6 +11,7 @@
 */
 
 #include<SDL/SDL_ttf.h>
+#include "game_grid.hpp"
 
 #include <iostream>
 using namespace std;
@@ -27,6 +28,7 @@ enum RGB {
 };
 
 struct sJugador {
+    int x, y;
     Sint8 dx, dy;
     Uint32 Color_Cabeza;
     Uint32 Color_Cuerpo;
@@ -53,11 +55,9 @@ void Mostrar_Resultado();
 
 int main( int argc, char *argv[] )
 {
+    GameGrid gameGrid( 32 );
     (void)( argc );
     (void)( argv );
-
-    SDL_Rect C1, C2; // Cuadrados que representan a ambos jugadores.
-
 
     /*
         Inicialización del sistema de video.
@@ -82,32 +82,30 @@ int main( int argc, char *argv[] )
         J2.Color_Cuerpo = SDL_MapRGB( Pantalla->format, 0, 0, 155 );
 
         for( ;; ){
+            gameGrid.clear();
 
             /*
                 Inicialización de las coordenadas y el tamaño de los cuadrados que representaran a
                 los jugadores.
             */
-            C1.x = 150;
-            C1.y = 300;
-            C1.h = TAM;
-            C1.w = TAM;
+            J1.x = 11;
+            J1.y = 16;
 
-            C2.x = 650;
-            C2.y = 300;
-            C2.h = TAM;
-            C2.w = TAM;
+            J2.x = 21;
+            J2.y = 16;
 
             /*
             Inicialización del desplazamiento inicial de cada jugador. Ambos empezarán
             desplazándose hacia arriba.
             */
             J1.dx = J2.dx = 0;
-            J1.dy = J2.dy = -TAM;
+            J1.dy = J2.dy = -1;
+
             /*
                 Dibujado de la "cabeza" de cada jugador.
             */
-            SDL_FillRect( Pantalla, &C1, J1.Color_Cabeza );
-            SDL_FillRect( Pantalla, &C2, J2.Color_Cabeza );
+            gameGrid.setPos( J1.x, J1.y, TileType::PLAYER_1 );
+            gameGrid.setPos( J2.x, J2.y, TileType::PLAYER_2 );
 
             Muerte_J1 = Muerte_J2 = false;
 
@@ -132,56 +130,40 @@ int main( int argc, char *argv[] )
                                 Botones de dirección del jugador 1.
                             */
                             case SDLK_w:
-                                if( Obtener_Pixel( Pantalla, C1.x, C1.y-TAM ) != J1.Color_Cuerpo ){
-                                    J1.dy = -TAM;
-                                    J1.dx = 0;
-                                }
+                                J1.dy = -1;
+                                J1.dx = 0;
                             break;
                             case SDLK_s:
-                                if( Obtener_Pixel( Pantalla, C1.x, C1.y+TAM ) != J1.Color_Cuerpo ){
-                                    J1.dy = TAM;
-                                    J1.dx = 0;
-                                }
+                                J1.dy = 1;
+                                J1.dx = 0;
                             break;
                             case SDLK_d:
-                                if( Obtener_Pixel( Pantalla, C1.x+TAM, C1.y ) != J1.Color_Cuerpo ){
-                                    J1.dy = 0;
-                                    J1.dx = TAM;
-                                }
+                                J1.dy = 0;
+                                J1.dx = 1;
                             break;
                             case SDLK_a:
-                                if( Obtener_Pixel( Pantalla, C1.x-TAM, C1.y ) != J1.Color_Cuerpo ){
-                                    J1.dy = 0;
-                                    J1.dx = -TAM;
-                                }
+                                J1.dy = 0;
+                                J1.dx = -1;
                             break;
 
                             /*
                                 Botones de dirección del jugador 2.
                             */
                             case SDLK_UP:
-                                if( Obtener_Pixel( Pantalla, C2.x, C2.y-TAM ) != J2.Color_Cuerpo ){
-                                    J2.dy = -TAM;
-                                    J2.dx = 0;
-                                }
+                                J2.dy = -1;
+                                J2.dx = 0;
                             break;
                             case SDLK_DOWN:
-                                if( Obtener_Pixel( Pantalla, C2.x, C2.y+TAM ) != J2.Color_Cuerpo ){
-                                    J2.dy = TAM;
-                                    J2.dx = 0;
-                                }
+                                J2.dy = 1;
+                                J2.dx = 0;
                             break;
                             case SDLK_RIGHT:
-                                if( Obtener_Pixel( Pantalla, C2.x+TAM, C2.y ) != J2.Color_Cuerpo ){
-                                    J2.dy = 0;
-                                    J2.dx = TAM;
-                                }
+                                J2.dy = 0;
+                                J2.dx = 1;
                             break;
                             case SDLK_LEFT:
-                                if( Obtener_Pixel( Pantalla, C2.x-TAM, C2.y ) != J2.Color_Cuerpo ){
-                                    J2.dy = 0;
-                                    J2.dx = -TAM;
-                                }
+                                J2.dy = 0;
+                                J2.dx = -1;
                             break;
 
                             default:
@@ -197,49 +179,42 @@ int main( int argc, char *argv[] )
                     }
                 }
 
-                /*
-                    Se sustituye la "cabeza" por otra parte del "cuerpo".
-                */
-                SDL_FillRect( Pantalla, &C1, J1.Color_Cuerpo );
-                SDL_FillRect( Pantalla, &C2, J2.Color_Cuerpo );
 
                 /*
                     Se avanzan las coordenadas de ambos jugadores.
                 */
-                C1.x += J1.dx;
-                C1.y += J1.dy;
+                J1.x += J1.dx;
+                J1.y += J1.dy;
 
-                C2.x += J2.dx;
-                C2.y += J2.dy;
+                J2.x += J2.dx;
+                J2.y += J2.dy;
 
-                if( !Valor_En_Rango( C1.x+C1.w, 0, 800 ) || !Valor_En_Rango( C1.y+C1.h, 0, 600 )
-                    || ( Obtener_Pixel( Pantalla, C1.x, C1.y ) != COLOR_NEGRO ) ){
-                    /*
-                        El jugador 1 muere al salir de la pantalla o a chocar con un obstáculo.
-                    */
+
+                if( gameGrid.getPos( J1.x, J1.y ) == TileType::EMPTY ){
+                    gameGrid.setPos( J1.x, J1.y, TileType::PLAYER_1 );
+                    gameGrid.setPos( J1.x - J1.dx, J1.y - J1.dy, TileType::PLAYER_1_WALL );
+                }else{
                     Muerte_J1 = true;
                 }
 
-                if( !Valor_En_Rango( C2.x+C2.w, 0, 800 ) || !Valor_En_Rango( C2.y+C2.h, 0, 600 )
-                    || ( Obtener_Pixel( Pantalla, C2.x, C2.y ) != COLOR_NEGRO ) ){
-                    /*
-                        El jugador 2 muere al salir de la pantalla o a chocar con un obstáculo.
-                    */
+                if( gameGrid.getPos( J2.x, J2.y ) == TileType::EMPTY ){
+                    gameGrid.setPos( J2.x, J2.y, TileType::PLAYER_2 );
+                    gameGrid.setPos( J2.x - J2.dx, J2.y - J2.dy, TileType::PLAYER_2_WALL );
+                }else{
                     Muerte_J2 = true;
                 }
 
-                /*
-                    Se dibuja la "cabeza" en las nuevas coordenadas para ambos jugadores.
-                */
-                SDL_FillRect( Pantalla, &C1, J1.Color_Cabeza );
-                SDL_FillRect( Pantalla, &C2, J2.Color_Cabeza );
 
                 /*
                     Se actualiza la pantalla y se espera 0.250 segundos.
                 */
+                gameGrid.draw( Pantalla,
+                               J1.Color_Cabeza,
+                               J1.Color_Cuerpo,
+                               J2.Color_Cabeza,
+                               J2.Color_Cuerpo );
                 SDL_Flip( Pantalla );
                 SDL_Delay( 50 );
-
             }
 
             SDL_FillRect( Pantalla, NULL, COLOR_NEGRO );

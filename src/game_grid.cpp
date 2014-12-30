@@ -1,4 +1,5 @@
 #include "game_grid.hpp"
+#include <stdexcept>
 
 const unsigned int TILE_SIZE = 20;
 
@@ -16,9 +17,14 @@ GameGrid::GameGrid( unsigned int size ) :
  * 3. Getters
  ***/
 
-TileType GameGrid::getPos( unsigned int x, unsigned int y ) const
+TileType GameGrid::getPos( int x, int y ) const
 {
-    return matrix_.at( y * MATRIX_SIZE_ + x );
+    if( ( x >= 0 ) && ( static_cast<unsigned int>( x ) < MATRIX_SIZE_ ) &&
+        ( y >= 0 ) && ( static_cast<unsigned int>( y ) < MATRIX_SIZE_ ) ){
+        return matrix_.at( y * MATRIX_SIZE_ + x );
+    }else{
+        return TileType::INVALID;
+    }
 }
 
 
@@ -26,9 +32,17 @@ TileType GameGrid::getPos( unsigned int x, unsigned int y ) const
  * 4. Setters
  ***/
 
-void GameGrid::setPos( unsigned int x, unsigned int y, TileType type )
+void GameGrid::setPos( int x, int y, TileType type )
 {
     matrix_.at( y * MATRIX_SIZE_ + x ) = type;
+}
+
+
+void GameGrid::clear()
+{
+    for( TileType& tile : matrix_ ){
+        tile = TileType::EMPTY;
+    }
 }
 
 
@@ -65,10 +79,14 @@ void GameGrid::draw( SDL_Surface *screen,
                 case TileType::PLAYER_2_WALL:
                     SDL_FillRect( screen, &rect, playerWallColor2 );
                 break;
+                case TileType::INVALID:
+                    throw std::runtime_error( "Invalid tile!" );
+                break;
             }
 
             rect.x += TILE_SIZE;
         }
+        rect.x = 0;
         rect.y += TILE_SIZE;
     }
 }
