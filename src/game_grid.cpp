@@ -16,9 +16,9 @@ GameGrid::GameGrid( unsigned int size ) :
  * 3. Getters
  ***/
 
-TileType GameGrid::getPos( unsigned int row, unsigned int column ) const
+TileType GameGrid::getPos( unsigned int x, unsigned int y ) const
 {
-    return matrix_.at( column * MATRIX_SIZE_ + row );
+    return matrix_.at( y * MATRIX_SIZE_ + x );
 }
 
 
@@ -26,9 +26,9 @@ TileType GameGrid::getPos( unsigned int row, unsigned int column ) const
  * 4. Setters
  ***/
 
-void GameGrid::setPos( unsigned int row, unsigned int column, TileType type )
+void GameGrid::setPos( unsigned int x, unsigned int y, TileType type )
 {
-    matrix_.at( column * MATRIX_SIZE_ + row ) = type;
+    matrix_.at( y * MATRIX_SIZE_ + x ) = type;
 }
 
 
@@ -45,7 +45,7 @@ void GameGrid::draw( SDL_Surface *screen, Uint32 playerColor1, Uint32 playerColo
         for( column = 0; column < MATRIX_SIZE_; column++ ){
             rect.w = TILE_SIZE;
             rect.h = TILE_SIZE;
-            switch( getPos( row, column ) ){
+            switch( getPos( column, row ) ){
                 case TileType::EMPTY:
                     SDL_FillRect( screen, &rect, 0 );
                 break;

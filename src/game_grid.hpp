@@ -30,13 +30,13 @@ class GameGrid
         /***
          * 3. Getters
          ***/
-        TileType getPos( unsigned int row, unsigned int column ) const;
+        TileType getPos( unsigned int x, unsigned int y ) const;
 
 
         /***
          * 4. Setters
          ***/
-        void setPos( unsigned int row, unsigned int column, TileType type );
+        void setPos( unsigned int x, unsigned int y, TileType type );
 
 
         /***
