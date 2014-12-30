@@ -4,6 +4,7 @@
 #define GAME_GRID_HPP
 
 #include <vector>
+#include <SDL/SDL.h>
 
 enum class TileType {
     EMPTY,
@@ -36,6 +37,12 @@ class GameGrid
          * 4. Setters
          ***/
         void setPos( unsigned int row, unsigned int column, TileType type );
+
+
+        /***
+         * 5. Drawing
+         ***/
+        void draw( SDL_Surface* screen, Uint32 playerColor1, Uint32 playerColor2 ) const;
 
 
     private:
