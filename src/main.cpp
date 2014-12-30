@@ -355,11 +355,7 @@ void Mostrar_Resultado(){
 
 
 inline int Valor_En_Rango( Sint16 Valor, Sint16 Min, Sint16 Max ){
-    if( Valor <= Min | Valor >= Max ){
-        return false;
-    }else{
-        return true;
-    }
+    return ( ( Valor > Min ) && ( Valor < Max ) );
 }
 
 
