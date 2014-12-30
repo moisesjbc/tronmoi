@@ -43,6 +43,8 @@ void GameGrid::draw( SDL_Surface *screen, Uint32 playerColor1, Uint32 playerColo
 
     for( row = 0; row < MATRIX_SIZE_; row++ ){
         for( column = 0; column < MATRIX_SIZE_; column++ ){
+            rect.w = TILE_SIZE;
+            rect.h = TILE_SIZE;
             switch( getPos( row, column ) ){
                 case TileType::EMPTY:
                     SDL_FillRect( screen, &rect, 0 );
