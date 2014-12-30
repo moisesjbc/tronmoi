@@ -6,7 +6,7 @@
   Fecha de inicio: 02/08/2009
   Fecha de finalización: 03/08/2009 (v0.6), 03/08/2009 (v0.65)
   Descripcion: Versión del clásico juego Tron. Dos jugadores permanecen en movimiento sobre la
-  pantalla dejando un muro detrás de sí. Si uno de los jugadores sale de la pantalla o se
+  screen dejando un muro detrás de sí. Si uno de los jugadores sale de la screen o se
   choca con un muro pierde.
 */
 
@@ -20,8 +20,8 @@ using namespace std;
 /*                             Constantes y variables globales                                 */
 /***********************************************************************************************/
 
-SDL_Surface *Pantalla;
-SDL_Event Evento;
+SDL_Surface *screen;
+SDL_Event event;
 
 struct Player {
     int x, y;
@@ -42,15 +42,12 @@ void Mostrar_Resultado();
 /*                                Definiciones de funciones                                    */
 /***********************************************************************************************/
 
-
-
-
-
-
 int main( int argc, char *argv[] )
 {
     (void)( argc );
     (void)( argv );
+
+
 
     /*
         Inicialización del sistema de video.
@@ -60,21 +57,21 @@ int main( int argc, char *argv[] )
 
     if( SDL_WasInit( SDL_INIT_VIDEO ) ){
         atexit( SDL_Quit );
-        Pantalla = SDL_SetVideoMode( 800, 600, 32, SDL_ANYFORMAT );
+        screen = SDL_SetVideoMode( 800, 600, 32, SDL_ANYFORMAT );
         SDL_WM_SetCaption( "TRONMOI", NULL );
 
-        GameGrid gameGrid( Pantalla, 30 );
+        GameGrid gameGrid( screen, 30 );
 
-        const Uint32 COLOR_NEGRO = SDL_MapRGB( Pantalla->format, 0, 0, 0 );
+        const Uint32 COLOR_NEGRO = SDL_MapRGB( screen->format, 0, 0, 0 );
 
         /*
             Inicialización de los colores elegidos para ambos jugadores.
         */
-        J1.playerColor = SDL_MapRGB( Pantalla->format, 255, 0, 0 );
-        J1.wallColor = SDL_MapRGB( Pantalla->format, 155, 0, 0 );
+        J1.playerColor = SDL_MapRGB( screen->format, 255, 0, 0 );
+        J1.wallColor = SDL_MapRGB( screen->format, 155, 0, 0 );
 
-        J2.playerColor = SDL_MapRGB( Pantalla->format, 0, 0, 255 );
-        J2.wallColor = SDL_MapRGB( Pantalla->format, 0, 0, 155 );
+        J2.playerColor = SDL_MapRGB( screen->format, 0, 0, 255 );
+        J2.wallColor = SDL_MapRGB( screen->format, 0, 0, 155 );
 
         for( ;; ){
             gameGrid.clear();
@@ -107,17 +104,17 @@ int main( int argc, char *argv[] )
                     vivos.
                 */
 
-                while( SDL_PollEvent( &Evento ) ){
+                while( SDL_PollEvent( &event ) ){
                     /*
-                        Consulta de la cola de eventos.
+                        Consulta de la cola de events.
                     */
-                    if( Evento.type == SDL_KEYDOWN ){
+                    if( event.type == SDL_KEYDOWN ){
                         /*
-                            Evento producido al pulsar una tecla. Se analiza si es uno de los
+                            event producido al pulsar una tecla. Se analiza si es uno de los
                             botones de dirección de uno de los jugadores y en tal caso se
                             modifica la dirección de su desplazamiento.
                         */
-                        switch( Evento.key.keysym.sym ){
+                        switch( event.key.keysym.sym ){
                             /*
                                 Botones de dirección del jugador 1.
                             */
@@ -163,9 +160,9 @@ int main( int argc, char *argv[] )
                             break;
 
                         };
-                    }else if( Evento.type == SDL_QUIT ){
+                    }else if( event.type == SDL_QUIT ){
                         /*
-                            Evento para salir del programa.
+                            event para salir del programa.
                         */
                         exit(0);
                     }
@@ -198,23 +195,23 @@ int main( int argc, char *argv[] )
 
 
                 /*
-                    Se actualiza la pantalla y se espera 0.250 segundos.
+                    Se actualiza la screen y se espera 0.250 segundos.
                 */
                 gameGrid.draw( J1.playerColor,
                                J1.wallColor,
                                J2.playerColor,
                                J2.wallColor );
-                SDL_Flip( Pantalla );
+                SDL_Flip( screen );
                 SDL_Delay( 50 );
             }
 
-            SDL_FillRect( Pantalla, NULL, COLOR_NEGRO );
+            SDL_FillRect( screen, NULL, COLOR_NEGRO );
             /*
                 Según si uno de los jugadores o ambos están muertos se determina quién ganó.
             */
 
             Mostrar_Resultado();
-            SDL_FillRect( Pantalla, NULL, COLOR_NEGRO );
+            SDL_FillRect( screen, NULL, COLOR_NEGRO );
 
         }
     }
@@ -282,19 +279,19 @@ void Mostrar_Resultado(){
     }
 
     /*
-        Blitting y refresco de la pantalla.
+        Blitting y refresco de la screen.
     */
-    SDL_BlitSurface( I_Victoria, NULL, Pantalla, &C_Victoria );
-    SDL_Flip( Pantalla );
+    SDL_BlitSurface( I_Victoria, NULL, screen, &C_Victoria );
+    SDL_Flip( screen );
     SDL_Delay( 1000 );
-    while( SDL_PollEvent( &Evento ) ){
-        if( Evento.type == SDL_QUIT ){
+    while( SDL_PollEvent( &event ) ){
+        if( event.type == SDL_QUIT ){
             exit(0);
         }
     }
 
-    SDL_BlitSurface( I_Recomenzar, NULL, Pantalla, &C_Recomenzar );
-    SDL_Flip( Pantalla );
+    SDL_BlitSurface( I_Recomenzar, NULL, screen, &C_Recomenzar );
+    SDL_Flip( screen );
 
     /*
         Liberación de las superficies;
@@ -303,14 +300,14 @@ void Mostrar_Resultado(){
     SDL_FreeSurface( I_Recomenzar );
 
     /*
-        Se permanece en la pantalla de resultado mientras no se pulse una tecla o no se cierre
+        Se permanece en la screen de resultado mientras no se pulse una tecla o no se cierre
         el juego.
     */
     while( !Salir_Bucle ){
-        while( SDL_PollEvent( &Evento ) ){
-            if( Evento.type == SDL_KEYDOWN ){
+        while( SDL_PollEvent( &event ) ){
+            if( event.type == SDL_KEYDOWN ){
                 Salir_Bucle = true;
-            }else if( Evento.type == SDL_QUIT ){
+            }else if( event.type == SDL_QUIT ){
                 exit( 0 );
             }
         }
