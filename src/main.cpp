@@ -32,9 +32,10 @@ struct Player {
     Sint8 dx, dy;
     Uint32 playerColor;
     Uint32 wallColor;
+
+    bool dead;
 } J1, J2;
 
-bool Muerte_J1 = false, Muerte_J2 = false;
 const Uint8 TAM = 20; // Tamaño del cuadrado que representa a cada jugador.
 
 /*                                 Prototipos de funciones                                     */
@@ -105,9 +106,9 @@ int main( int argc, char *argv[] )
             gameGrid.setPos( J1.x, J1.y, TileType::PLAYER_1 );
             gameGrid.setPos( J2.x, J2.y, TileType::PLAYER_2 );
 
-            Muerte_J1 = Muerte_J2 = false;
+            J1.dead = J2.dead = false;
 
-            while( !Muerte_J1 && !Muerte_J2 ){
+            while( !J1.dead && !J2.dead ){
                 /*
                     Game loop : Se permanecerá en el bucle mientras ambos jugadores permanezcan
                     vivos.
@@ -192,14 +193,14 @@ int main( int argc, char *argv[] )
                     gameGrid.setPos( J1.x, J1.y, TileType::PLAYER_1 );
                     gameGrid.setPos( J1.x - J1.dx, J1.y - J1.dy, TileType::PLAYER_1_WALL );
                 }else{
-                    Muerte_J1 = true;
+                    J1.dead = true;
                 }
 
                 if( gameGrid.getPos( J2.x, J2.y ) == TileType::EMPTY ){
                     gameGrid.setPos( J2.x, J2.y, TileType::PLAYER_2 );
                     gameGrid.setPos( J2.x - J2.dx, J2.y - J2.dy, TileType::PLAYER_2_WALL );
                 }else{
-                    Muerte_J2 = true;
+                    J2.dead = true;
                 }
 
 
@@ -260,9 +261,9 @@ void Mostrar_Resultado(){
         Según se trate de un empate o de la victoria de uno de los jugadores se carga la imagen
         con el resultado acorde.
     */
-    if( Muerte_J1 && Muerte_J2 ){
+    if( J1.dead && J2.dead ){
         I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Empate.bmp" );
-    }else if( Muerte_J1 ){
+    }else if( J1.dead ){
         I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_2.bmp" );
     }else{
         I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_1.bmp" );
