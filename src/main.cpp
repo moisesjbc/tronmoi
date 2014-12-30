@@ -281,17 +281,17 @@ void Mostrar_Resultado(){
         con el resultado acorde.
     */
     if( Muerte_J1 && Muerte_J2 ){
-        I_Victoria = SDL_LoadBMP( "IMG/Empate.bmp" );
+        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Empate.bmp" );
     }else if( Muerte_J1 ){
-        I_Victoria = SDL_LoadBMP( "IMG/Gana_Jugador_2.bmp" );
+        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_2.bmp" );
     }else{
-        I_Victoria = SDL_LoadBMP( "IMG/Gana_Jugador_1.bmp" );
+        I_Victoria = SDL_LoadBMP( "../share/tronmoi/img/Gana_Jugador_1.bmp" );
     }
 
     /*
         Se carga la imagen con el texto "Pulse una tecla cualquiera para jugar de nuevo".
     */
-    I_Recomenzar = SDL_LoadBMP( "IMG/Recomenzar.bmp" );
+    I_Recomenzar = SDL_LoadBMP( "../share/tronmoi/img/Recomenzar.bmp" );
 
     /*
         Si una de las imagenes no se cargó correctamente se sale del programa y se informa del
