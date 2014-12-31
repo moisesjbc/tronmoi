@@ -133,7 +133,7 @@ void Tronmoi::run()
                     exit( 0 );
                 }
                 t1 = SDL_GetTicks();
-            }while( t1 - t0 < 33 );
+            }while( t1 - t0 < 50 );
 
             // Update both players.
             player1.x += player1.dx;
