@@ -19,8 +19,7 @@
 
 #include "tronmoi.hpp"
 #include <stdexcept>
-#include <iostream>
-using namespace std;
+
 
 /***
  * 1. Construction
