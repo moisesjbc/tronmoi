@@ -55,4 +55,6 @@ int main( int argc, char *argv[] )
     // Run the game
     Tronmoi tronmoi( screen_ );
     tronmoi.run();
+
+    return 0;
 }
