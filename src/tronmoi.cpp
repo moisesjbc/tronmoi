@@ -74,7 +74,12 @@ void Tronmoi::run()
         // Main loop: keep running as long as both players are alive.
         player1.dead = player2.dead = false;
         while( !player1.dead && !player2.dead ){
-            while( SDL_PollEvent( &event ) ){
+            Uint32 t0 = SDL_GetTicks();
+            Uint32 t1;
+
+            do{
+                SDL_PollEvent( &event );
+
                 // Process user input.
                 if( event.type == SDL_KEYDOWN ){
                     SDLKey c = event.key.keysym.sym;
@@ -127,8 +132,8 @@ void Tronmoi::run()
                     // Exit game.
                     exit( 0 );
                 }
-            }
-
+                t1 = SDL_GetTicks();
+            }while( t1 - t0 < 33 );
 
             // Update both players.
             player1.x += player1.dx;
@@ -155,7 +160,6 @@ void Tronmoi::run()
                            player2.playerColor,
                            player2.wallColor );
             SDL_Flip( screen_ );
-            SDL_Delay( 50 );
         }
 
         // Display the match's result.
