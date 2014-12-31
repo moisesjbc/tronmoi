@@ -78,63 +78,52 @@ void Tronmoi::run()
             while( SDL_PollEvent( &event ) ){
                 // Process user input.
                 if( event.type == SDL_KEYDOWN ){
-                    switch( event.key.keysym.sym ){
-                        // Movement for player 1.
-                        case SDLK_w:
-                            if( player1.dy != 1 ){
-                                player1.dy = -1;
-                                player1.dx = 0;
-                            }
-                        break;
-                        case SDLK_s:
-                            if( player1.dy != -1 ){
-                                player1.dy = 1;
-                                player1.dx = 0;
-                            }
-                        break;
-                        case SDLK_d:
-                            if( player1.dx != -1 ){
-                                player1.dy = 0;
-                                player1.dx = 1;
-                            }
-                        break;
-                        case SDLK_a:
-                            if( player1.dx != 1 ){
-                                player1.dy = 0;
-                                player1.dx = -1;
-                            }
-                        break;
+                    SDLKey c = event.key.keysym.sym;
+
+                    // Movement for player 1.
+                    if( c == SDLK_w ){
+                        if( player1.dy != 1 ){
+                            player1.dy = -1;
+                            player1.dx = 0;
+                        }
+                    }else if( c == SDLK_s ){
+                        if( player1.dy != -1 ){
+                            player1.dy = 1;
+                            player1.dx = 0;
+                        }
+                    }else if( c == SDLK_d ){
+                        if( player1.dx != -1 ){
+                            player1.dy = 0;
+                            player1.dx = 1;
+                        }
+                    }else if( c == SDLK_a ){
+                        if( player1.dx != 1 ){
+                            player1.dy = 0;
+                            player1.dx = -1;
+                        }
 
                         // Movement for player 2.
-                        case SDLK_UP:
-                            if( player2.dy != 1 ){
-                                player2.dy = -1;
-                                player2.dx = 0;
-                            }
-                        break;
-                        case SDLK_DOWN:
-                            if( player2.dy != -1 ){
-                                player2.dy = 1;
-                                player2.dx = 0;
-                            }
-                        break;
-                        case SDLK_RIGHT:
-                            if( player2.dx != -1 ){
-                                player2.dy = 0;
-                                player2.dx = 1;
-                            }
-                        break;
-                        case SDLK_LEFT:
-                            if( player2.dx != 1 ){
-                                player2.dy = 0;
-                                player2.dx = -1;
-                            }
-                        break;
-
-                        default:
-                            NULL;
-                        break;
-                    };
+                    }else if( c == SDLK_UP ){
+                        if( player2.dy != 1 ){
+                            player2.dy = -1;
+                            player2.dx = 0;
+                        }
+                    }else if( c == SDLK_DOWN ){
+                        if( player2.dy != -1 ){
+                            player2.dy = 1;
+                            player2.dx = 0;
+                        }
+                    }else if( c == SDLK_RIGHT ){
+                        if( player2.dx != -1 ){
+                            player2.dy = 0;
+                            player2.dx = 1;
+                        }
+                    }else if( c == SDLK_LEFT ){
+                        if( player2.dx != 1 ){
+                            player2.dy = 0;
+                            player2.dx = -1;
+                        }
+                    }
                 }else if( event.type == SDL_QUIT ){
                     // Exit game.
                     exit( 0 );

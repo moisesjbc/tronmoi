@@ -1,6 +1,6 @@
 LIBS += -lSDL_ttf -lSDL
 
-QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -pedantic -pedantic-errors
+QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -Werror -pedantic -pedantic-errors
 
 SOURCES += \
     ../src/main.cpp \
