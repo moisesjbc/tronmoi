@@ -204,10 +204,10 @@ void Tronmoi::displayIntroScreen()
 
         SDL_Rect textRect =
         {
-            ( screen_->w - textSurface->w ) >> 1,
-            ( screen_->h - textSurface->h ) * textIndex / ( texts.size() - 1 ),
-            textSurface->w,
-            textSurface->h
+            static_cast< Sint16 >( ( screen_->w - textSurface->w ) >> 1 ),
+            static_cast< Sint16 >( ( screen_->h - textSurface->h ) * textIndex / ( texts.size() - 1 ) ),
+            static_cast< Uint16 >( textSurface->w ),
+            static_cast< Uint16 >( textSurface->h )
         };
 
         SDL_BlitSurface( textSurface, nullptr, screen_, &textRect );
@@ -271,10 +271,10 @@ void Tronmoi::displayResult(){
     // Display the victory surface and wait one second.
     SDL_FillRect( screen_, NULL, 0 );
     SDL_Rect victoryRect = {
-        ( ( screen_->w - victorySurface->w ) >> 1 ),
-        ( ( screen_->h - victorySurface->w ) >> 1 ),
-        victorySurface->w,
-        victorySurface->h
+        static_cast< Sint16 >( ( ( screen_->w - victorySurface->w ) >> 1 ) ),
+        static_cast< Sint16 >( ( ( screen_->h - victorySurface->w ) >> 1 ) ),
+        static_cast< Uint16 >( victorySurface->w ),
+        static_cast< Uint16 >( victorySurface->h )
     };
     SDL_BlitSurface( victorySurface, NULL, screen_, &victoryRect );
     SDL_Flip( screen_ );
@@ -288,10 +288,10 @@ void Tronmoi::displayResult(){
     // Display the restart surface.
     SDL_Rect restartRect =
     {
-        ( ( screen_->w - restartSurface->w ) >> 1 ),
-        ( screen_->h - restartSurface->h ),
-        restartSurface->w,
-        restartSurface->h
+        static_cast< Sint16 >( ( ( screen_->w - restartSurface->w ) >> 1 ) ),
+        static_cast< Sint16 >( ( screen_->h - restartSurface->h ) ),
+        static_cast< Uint16 >( restartSurface->w ),
+        static_cast< Uint16 >( restartSurface->h )
     };
     SDL_BlitSurface( restartSurface, NULL, screen_, &restartRect );
     SDL_Flip( screen_ );

@@ -31,8 +31,8 @@ GameGrid::GameGrid( SDL_Surface *screen, unsigned int size ) :
     MATRIX_SIZE_( size ),
     matrix_( MATRIX_SIZE_ * MATRIX_SIZE_, TileType::EMPTY )
 {
-    if( size * TILE_SIZE > screen_->w ||
-        size * TILE_SIZE > screen_->h ){
+    if( size * TILE_SIZE > static_cast< unsigned int>( screen_->w ) ||
+        size * TILE_SIZE > static_cast< unsigned int>( screen_->h ) ){
         throw std::runtime_error( "Game's grid is bigger than screen!" );
     }
 }
@@ -92,8 +92,8 @@ void GameGrid::draw( Uint32 playerColor1,
                      Uint32 playerWallColor2 ) const
 {
     SDL_Rect rect = {
-        ( screen_->w - MATRIX_SIZE_ * TILE_SIZE ) >> 1,
-        ( screen_->h - MATRIX_SIZE_ * TILE_SIZE ) >> 1,
+        static_cast< Sint16 >( ( screen_->w - MATRIX_SIZE_ * TILE_SIZE ) >> 1 ),
+        static_cast< Sint16 >( ( screen_->h - MATRIX_SIZE_ * TILE_SIZE ) >> 1 ),
         TILE_SIZE,
         TILE_SIZE };
     unsigned int row, column;
