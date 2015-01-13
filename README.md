@@ -2,7 +2,11 @@
 
 Tronmoi is a Tron clone for two players (no machine player).
 
-# Building (Only tested on Ubuntu 14.04)
+## Current status
+
+**Inactive**. A playable demo (DEB package) can be downloaded (from here)[https://github.com/moisesjbc/tronmoi/releases].
+
+## Building (Only tested on Ubuntu 14.04)
 
 1. Install dependencies
 
