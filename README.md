@@ -1,5 +1,7 @@
 # Tronmoi
 
+[Ver en Español](README.md)
+
 ![Tronmoi screenshot](img/tronmoi.png "Tronmoi screenshot")
 
 Tronmoi is a Tron clone for two players (no machine player). It was made back in 2009, and by the end of 2014, I decided to refine it and release it as a demo (v0.1.0)
