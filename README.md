@@ -1,6 +1,6 @@
 # Tronmoi
 
-[Ver en Español](README.md)
+[Ver en Español](README_ES.md)
 
 ![Tronmoi screenshot](img/tronmoi.png "Tronmoi screenshot")
 
