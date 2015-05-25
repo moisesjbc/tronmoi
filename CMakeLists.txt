@@ -34,3 +34,7 @@ include_directories( ${SDL_INCLUDE_DIR} ${SDL_TTF_INCLUDE_DIR} )
 # Set executable
 add_executable( ${PROJECT_NAME} ${SOURCE_FILES} )
 target_link_libraries( ${PROJECT_NAME} ${SDL_LIBRARY} ${SDL_TTF_LIBRARY} )
+
+# Installation
+install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION games )
+
