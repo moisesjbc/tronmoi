@@ -38,3 +38,15 @@ target_link_libraries( ${PROJECT_NAME} ${SDL_LIBRARY} ${SDL_TTF_LIBRARY} )
 # Installation
 install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION games )
 
+# Packaging
+MATH( EXPR PACKAGE_REVISION_NUMBER "${PROJECT_PATCH_VERSION}+1")
+set( CPACK_GENERATOR "DEB")
+set( CPACK_PACKAGE_NAME ${PROJECT_NAME} )
+set( CPACK_PACKAGE_VERSION "${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}-${PACKAGE_REVISION_NUMBER}" )
+set( CPACK_PACKAGE_CONTACT "Moisés J. Bonilla Caraballo <moisesjbc@gmail.com>" )
+set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple Tron clone" )
+
+# Packaging (DEB specific)
+set( CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl-ttf2.0-dev, libsdl1.2-dev, fonts-liberation" )
+
+include( CPack )
