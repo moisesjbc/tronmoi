@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}.${PROJECT_PATCH_VERSION}
+Name=${PROJECT_NAME}
+Comment=${PROJECT_NAME} - ${CPACK_PACKAGE_DESCRIPTION_SUMMARY}
+Exec=${PROJECT_NAME}
+Icon=/usr/share/${PROJECT_NAME}/icon.png
+Terminal=false
+Categories=Game

@@ -37,6 +37,8 @@ target_link_libraries( ${PROJECT_NAME} ${SDL_LIBRARY} ${SDL_TTF_LIBRARY} )
 
 # Installation
 install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION games )
+install( FILES "${CMAKE_SOURCE_DIR}/packaging/deb/${PROJECT_NAME}.desktop" DESTINATION /usr/share/applications/ )
+install( FILES "${CMAKE_SOURCE_DIR}/img/icon.png" DESTINATION "/usr/share/${PROJECT_NAME}/" )
 
 # Packaging
 MATH( EXPR PACKAGE_REVISION_NUMBER "${PROJECT_PATCH_VERSION}+1")
@@ -51,3 +53,7 @@ set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple Tron clone" )
 set( CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl-ttf2.0-dev, libsdl1.2-dev, fonts-liberation" )
 
 include( CPack )
+
+# Configuration
+configure_file( "${CMAKE_SOURCE_DIR}/packaging/deb/desktop_file.in"
+    "${CMAKE_SOURCE_DIR}/packaging/deb/${PROJECT_NAME}.desktop" )
