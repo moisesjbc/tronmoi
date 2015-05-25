@@ -39,6 +39,7 @@ target_link_libraries( ${PROJECT_NAME} ${SDL_LIBRARY} ${SDL_TTF_LIBRARY} )
 install( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION games )
 install( FILES "${CMAKE_SOURCE_DIR}/packaging/deb/${PROJECT_NAME}.desktop" DESTINATION /usr/share/applications/ )
 install( FILES "${CMAKE_SOURCE_DIR}/img/icon.png" DESTINATION "/usr/share/${PROJECT_NAME}/" )
+install( FILES "${CMAKE_SOURCE_DIR}/LICENSE" DESTINATION "/usr/share/${PROJECT_NAME}/" )
 
 # Packaging
 MATH( EXPR PACKAGE_REVISION_NUMBER "${PROJECT_PATCH_VERSION}+1")
