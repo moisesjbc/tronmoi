@@ -42,7 +42,7 @@ install( FILES "${CMAKE_SOURCE_DIR}/img/icon.png" DESTINATION "/usr/share/${PROJ
 install( FILES "${CMAKE_SOURCE_DIR}/LICENSE" DESTINATION "/usr/share/${PROJECT_NAME}/" )
 
 # Packaging
-MATH( EXPR PACKAGE_REVISION_NUMBER "${PROJECT_PATCH_VERSION}+1")
+set( PACKAGE_REVISION_NUMBER "2" )
 set( CPACK_STRIP_FILES "1" )
 set( CPACK_GENERATOR "DEB")
 set( CPACK_PACKAGE_NAME ${PROJECT_NAME} )
@@ -51,7 +51,7 @@ set( CPACK_PACKAGE_CONTACT "Moisés J. Bonilla Caraballo <moisesjbc@gmail.com>" 
 set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple Tron clone" )
 
 # Packaging (DEB specific)
-set( CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl-ttf2.0-dev, libsdl1.2-dev, fonts-liberation" )
+set( CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl-ttf2.0-0, libsdl1.2debian, fonts-liberation" )
 
 include( CPack )
 
